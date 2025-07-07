@@ -110,8 +110,8 @@ endfunction
 function! todo#txt#sort_by_priority_and_date() range
  " 保存光标和滚动状态
   let l:view = winsaveview()
-  let l:date_regex = "\\d\\{2,4\\}-\\d\\{2\\}-\\d\\{2\\}"
-  let l:priority_regex = '^\s*(\([A-C]\))'
+  let l:date_regex = "\\d\\{2,4\\}-\\d\\{2\\}-\\d\\{2\\}.*"
+  let l:priority_regex = '^(\([A-C]\))'
 
   " 第一步：按日期倒序（次要排序）
   execute a:firstline . ',' . a:lastline . 'sort! /' . l:date_regex . '/ r'
