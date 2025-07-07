@@ -107,6 +107,25 @@ function! todo#txt#sort_by_due_date() range
     execute a:firstline . "," . a:lastline . "g!/" . l:date_regex . "/m" . a:lastline
 endfunction
 
+function! todo#txt#sort_by_priority_and_date() range
+ " 保存光标和滚动状态
+  let l:view = winsaveview()
+  let l:date_regex = "\\d\\{2,4\\}-\\d\\{2\\}-\\d\\{2\\}"
+  let l:priority_regex = '^\s*(\([A-C]\))'
+
+  " 第一步：按日期倒序（次要排序）
+  execute a:firstline . ',' . a:lastline . 'sort! /' . l:date_regex . '/ r'
+
+  " 第二步：按优先级升序（主排序）
+  " A < B < C，升序即优先级高排前
+  execute a:firstline . ',' . a:lastline . 'sort /' . l:priority_regex . '/ r'
+
+  " 第三步：无优先级的任务移到底部（可选）
+  execute a:firstline . ',' . a:lastline . 'g!/^(\([A-C]\))/m' . a:lastline
+  " 恢复光标和滚动状态
+  call winrestview(l:view)
+endfunction
+
 " Increment and Decrement The Priority
 :set nf=octal,hex,alpha
 
